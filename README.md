@@ -1,1 +1,1 @@
-my read me on printf
+this is our first readme on a collaborated poject on the ALX Software Engineering program. This project sought to emulate the c Standard Library Function printf, making our own function using the clone version of the original printf function _printf.
