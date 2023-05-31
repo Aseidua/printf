@@ -9,20 +9,20 @@ void print_buffer(char buffer[], int *buff_ind);
 /**
  * _printf -  prints formateed output to the output stream
  * @format: a string that specifies the ouput format
- *@max: This shows the number of arguments
+ * @max - list of arguments
  * Return: The characters to be displayed.
  */
 int _printf(const char *format, ...)
 {
 	int a, printed = 0, printed_chars = 0;
 	int flags, width, precision, size, buff_ind = 0;
-	Va_list max;
+	Va_list;
 	char buffer[BUFF_SIZE];
 
 	if (format == NULL)
 		return (-1);
 
-	va_start(max, format);
+	va_start(;, format);
 
 	for (a = 0; format && format[a] != '\0'; a++)
 	{
@@ -58,7 +58,7 @@ int _printf(const char *format, ...)
 }
 
 /**
- * print_buffer -  This displays the elements of the buffer if available 
+ * print_buffer -  This displays the elements of the buffer if available
  * @buffer: This represents an array of chars
  * @buff_ind: This represents the length.
  */
