@@ -1,63 +1,72 @@
 #include "main.h"
-#include <string.h>
+#include <strings.h>
 #include <stdarg.h>
-#include <stdio.h>
+#include <unistd.h>
+
+
+void print_buffer(char buffer[], int *buff_ind);
+
 /**
- * _printf - Prints formatted output to the standard output stream.
- * @format: A string that specifies the output format.
- *
- * Return: The number of characters printed
+ * _printf -  prints formateed output to the output stream
+ * @format: a string that specifies the ouput format
+ * @max - list of arguments
+ * Return: The characters to be displayed.
  */
 int _printf(const char *format, ...)
 {
-    va_list args;
-    va_start(args, format);
+	int a, printed = 0, printed_chars = 0;
+	int flags, width, precision, size, buff_ind = 0;
+	Va_list;
+	char buffer[BUFF_SIZE];
 
- int count = 0;
-const char *ptr = format;
+	if (format == NULL)
+		return (-1);
 
-    while (*ptr != '\0')
-    {
-        if (*ptr == '%')
-        {
-            ptr++;
+	va_start(;, format);
 
+	for (a = 0; format && format[a] != '\0'; a++)
+	{
+		if (format[a] != '%')
+		{
+			buffer[buff_ind++] = format[a];
+			if (buff_ind == BUFF_SIZE)
+				print_buffer(buffer, &buff_ind);
+			/* write(1, &format[a], 1);*/
+			printed_chars++;
+		}
+		else
+		{
+			print_buffer(buffer, &buff_ind);
+			flags = nab_flags(format, &a);
+			width = nab_width(format, &a, max);
+			precision = nab_precision(format, &a, max);
+			size = nab_size(format, &a);
+			++a;
+			printed = handle_print(format, &a, max, buffer,
+				flags, width, precision, size);
+			if (printed == -1)
+				return (-1);
+			printed_chars += printed;
+		}
+	}
 
-            switch (*ptr)
-            {
-                case '%':
-                {
-                    putchar('%');
-                    count++;
-                    break;
-                }
-                case 'C':
-                {
-                    int ch = va_arg(args, int);
-                    putchar(ch);
-                    count++;
-                    break;
-                }
-                case 'S':
-                {
-                    char *str = va_arg(args, char *);
-                    fputs(str, stdout);
-                    count += strlen(str);
-                    break;
-                }
+	print_buffer(buffer, &buff_ind);
 
-            }
-        }
-        else
-        {
-            putchar(*ptr);
-            count++;
-        }
+	va_end(max);
 
-        ptr++;
-    }
-
-    va_end(args);
-
-    return count;
+	return (printed_chars);
 }
+
+/**
+ * print_buffer -  This displays the elements of the buffer if available
+ * @buffer: This represents an array of chars
+ * @buff_ind: This represents the length.
+ */
+void print_buffer(char buffer[], int *buff_ind)
+{
+	if (*buff_ind > 0)
+		write(1, &buffer[0], *buff_ind);
+
+	*buff_ind = 0;
+}
+
